@@ -1,15 +1,25 @@
+%global commit e672e0c
+%global snapshot .git20160416.%{commit}
+
 Name:           libxdg-basedir
 Version:        1.2.0
-Release:        9%{?dist}
+Release:        10%{snapshot}%{?dist}
 Summary:        Implementation of the XDG Base Directory Specifications
 
 Group:          System Environment/Libraries
 License:        MIT
-URL:            http://n.ethz.ch/student/nevillm/download/libxdg-basedir
-Source0:        http://n.ethz.ch/student/nevillm/download/libxdg-basedir/%{name}-%{version}.tar.gz
+URL:            https://github.com/devnev/libxdg-basedir
+
+# git clone https://github.com/devnev/libxdg-basedir
+# cd libxdg-basedir
+# git archive --prefix=libxdg-basedir/ master | bzip2 >../libxdg-basedir.tar.bz2
+Source0:        libxdg-basedir.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:         libxdg-basedir-leak.patch
 
+BuildRequires:  autoconf
+BuildRequires:  automake
+BuildRequires:  libtool
 
 %description
 The XDG Base Directory Specification defines where should user files 
@@ -43,11 +53,13 @@ developing applications that use %{name}.
 
 
 %prep
-%setup -q
+%setup -q -n %{name}
 
 %patch0 -p1
 
+
 %build
+autoreconf -if
 %configure --disable-static
 make %{?_smp_mflags}
 make doxygen-run
@@ -85,7 +97,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc doc/html/
 
+
 %changelog
+* Sat Apr 16 2016 Jajauma's Packages <jajauma@yandex.ru> - 1.2.0-10.git20160416.e672e0c
+- Build from the latest git snapshot
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
