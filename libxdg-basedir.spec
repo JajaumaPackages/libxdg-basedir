@@ -16,6 +16,7 @@ URL:            https://github.com/devnev/libxdg-basedir
 Source0:        libxdg-basedir.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:         libxdg-basedir-leak.patch
+Patch1:         libxdg-basedir-xdgzeromemory.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -56,6 +57,7 @@ developing applications that use %{name}.
 %setup -q -n %{name}
 
 %patch0 -p1
+%patch1 -p1
 
 
 %build
@@ -101,6 +103,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sat Apr 16 2016 Jajauma's Packages <jajauma@yandex.ru> - 1.2.0-10.git20160416.e672e0c
 - Build from the latest git snapshot
+- Patch broken xdgZeroMemory fallback implementation
 
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
